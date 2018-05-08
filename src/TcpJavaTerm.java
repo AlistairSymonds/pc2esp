@@ -17,12 +17,16 @@ public class TcpJavaTerm {
 
 
         Socket socket = new Socket();
+        String ip = args[0];
+        int port = Integer.parseInt(args[1]);
+        System.out.println("Attempting to connect to IP:" + ip +" on port: "+port);
         //must handle exception if connection cannot be opened
         try {
             //one second timeout
-            socket.connect(new InetSocketAddress(args[0], Integer.parseInt(args[1])),1000);
+            socket.connect(new InetSocketAddress(ip,port),2000);
         } catch (IOException e) {
             e.printStackTrace();
+            System.exit(1);
         }
 
         DataInputStream dataIn = null;
@@ -32,8 +36,9 @@ public class TcpJavaTerm {
             dataOut = new DataOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
+            System.exit(2);
         }
-
+        System.out.println("Connected!");
         Scanner cmdLine = new Scanner(System.in);
         String cmd = "";
         while (!cmd.equals("STOP")){
